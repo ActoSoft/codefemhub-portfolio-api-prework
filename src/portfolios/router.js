@@ -47,4 +47,39 @@ router.post('/', (req, res) => {
   return res.status(201).json(data);
 });
 
+// Update existing portfolio
+router.put('/:id', (req, res) => {
+  const data = req.body;
+  const portfolioId = req.params.id;
+
+  const portfolioIndex = portfolios.findIndex((portfolio) => portfolio.id === Number(portfolioId));
+  if (portfolioIndex === -1) {
+    return res.status(404).json({ message: `Portfolio with id: ${portfolioId} does not exists` });
+  }
+
+  // TODO: Implement validations
+
+  const portfolio = portfolios[portfolioIndex];
+  portfolio.updatedAt = new Date();
+  const updatedPortfolio = { ...portfolio, ...data };
+
+  portfolios.splice(portfolioIndex, 1, updatedPortfolio);
+
+  return res.status(200).json(updatedPortfolio);
+});
+
+// Delete portfolio
+router.delete('/:id', (req, res) => {
+  const portfolioId = req.params.id;
+
+  const portfolioIndex = portfolios.findIndex((portfolio) => portfolio.id === Number(portfolioId));
+  if (portfolioIndex === -1) {
+    return res.status(404).json({ message: `Portfolio with id ${portfolioId} does not exists` });
+  }
+
+  portfolios.splice(portfolioIndex, 1);
+
+  return res.status(200).json({ message: `Portfolio with id ${portfolioId} has been deleted` });
+});
+
 module.exports = router;
