@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const gzip = require('compression');
 const dotenv = require('dotenv');
+const portfoliosRouter = require('./src/portfolios/router');
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ const setupServer = () => {
 }
 
 const setupRouter = () => {
+  app.use('/portfolios', portfoliosRouter);
   console.log('Router setup done');
 }
 
